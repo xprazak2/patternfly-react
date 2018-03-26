@@ -3,34 +3,47 @@ import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import PropTypes from 'prop-types';
 
 class AsyncAutoComplete extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      options: [],
-      isLoading: false
-    };
-  }
+  state = {
+    options: this.props.options,
+    isLoading: this.props.isLoading
+  };
+
+  finishCallback = options => this.setState({ options, isLoading: false });
 
   handleSearch = () => {
     this.setState({ isLoading: true });
-    const options = this.props.onSearch() || [];
-    this.setState({ options, isLoading: false });
+    // The user must pass the callback to
+    // the 'onSearch' function in order to update the state properly.
+    this.props.onSearch(this.finishCallback);
   };
 
-  render() {
-    return (
-      <AsyncTypeahead
-        {...this.props}
-        onSearch={this.handleSearch}
-        options={this.state.options}
-        isLoading={this.state.isLoading}
-      />
-    );
-  }
+  render = () => (
+    <AsyncTypeahead
+      {...this.props}
+      onSearch={this.handleSearch}
+      options={this.state.options}
+      isLoading={this.state.isLoading}
+    />
+  );
 }
 
 AsyncAutoComplete.propTypes = {
-  onSearch: PropTypes.func.isRequired
+  onSearch: PropTypes.func.isRequired,
+  options: PropTypes.array,
+  isLoading: PropTypes.bool,
+  delay: PropTypes.number,
+  promptText: PropTypes.object,
+  searchText: PropTypes.object,
+  useCache: PropTypes.bool
+};
+
+AsyncAutoComplete.defaultProps = {
+  options: [],
+  isLoading: false,
+  delay: 200,
+  promptText: <span>Type to search...</span>,
+  searchText: <span>Searching...</span>,
+  useCache: true
 };
 
 export default AsyncAutoComplete;

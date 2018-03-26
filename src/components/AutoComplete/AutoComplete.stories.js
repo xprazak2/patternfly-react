@@ -3,8 +3,9 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, select, boolean, number } from '@storybook/addon-knobs';
 import AutoComplete from './AutoComplete';
 import AsyncAutoComplete from './AsyncAutoComplete';
-import { Form, FormGroup, MenuItem, Button } from '../../index';
+import { Form, FormGroup, Button } from '../../index';
 import Mocks from './mock';
+import GithubMenuItem from './GithubMenuItem';
 
 const AutoCompleteStories = storiesOf('AutoComplete', module);
 
@@ -81,7 +82,7 @@ AutoCompleteStories.addWithInfo('Use With Forms', () => {
       <br />
       <br />
       <br />
-      <h2>Submit Form On 'Enter'</h2>
+      <h2>Submit Form On &quot;Enter&quot;</h2>
       <Form horizontal onSubmit={e => alert('Form submitted!')}>
         <div className="col-sm-10">
           <FormGroup>
@@ -117,6 +118,11 @@ AutoCompleteStories.addWithInfo('Using Async Calls', () => {
   ]);
   const props = { bsSize, align, minLength, selectHintOnEnter };
 
+  const handleSearch = callback =>
+    fetch('https://api.github.com/repos/patternfly/patternfly-react/forks')
+      .then(response => response.json())
+      .then(forks => callback(forks.map(fork => fork.owner)));
+
   return (
     <div className="container">
       <br />
@@ -128,32 +134,30 @@ AutoCompleteStories.addWithInfo('Using Async Calls', () => {
         labelKey="login"
         minLength={0}
         placeholder="Search someone who have forked Patternfly-react.."
-        onSearch={() => Mocks.forks.map(fork => fork.owner)}
-        renderMenuItemChildren={result => (
-          <MenuItem key={result.id}>
-            <img
-              alt="avatar"
-              height="20px"
-              src={result.avatar_url}
-              style={{ borderRadius: '10px', margin: '5px' }}
-            />
-            {result.login}
-          </MenuItem>
-        )}
+        onSearch={handleSearch}
+        renderMenuItemChildren={option => <GithubMenuItem option={option} />}
       />
       <br />
       <br />
       <h4>
-        <b>The 'onSearch' prop</b>
+        <b>The &quot;onSearch&quot; prop</b>
       </h4>
-      <p>An async function that have to return data.</p>
+      <p>A function that returns the options that we want to display.</p>
+      <p>
+        This function recieves a callback and <b>MUST</b> pass the async results
+        into it.
+      </p>
+      <p>
+        This process is <b>required</b> for the component to update its state
+        and options properly.
+      </p>
       <br />
       <h4>
-        <b>The 'renderMenuItemChildren' prop</b>
+        <b>The &quot;renderMenuItemChildren&quot; prop</b>
       </h4>
       <p>
         A function that can manipulate the returned data and present it as
-        options, returns an element.
+        options, recieves an option and returns an element.
       </p>
     </div>
   );

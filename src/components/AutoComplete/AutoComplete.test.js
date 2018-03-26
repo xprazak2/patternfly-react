@@ -3,14 +3,14 @@ import { shallow } from 'enzyme';
 import AutoComplete from './AutoComplete';
 
 test('AutoComplete is working !!', () => {
-  const bsSize = 'large';
-  const align = 'justify';
-  const clearButton = true;
-  const multiple = true;
-  const allowNew = true;
-  const options = ['One', 'Two', 'Three'];
-  const props = { bsSize, align, clearButton, multiple, allowNew, options };
-  const component = shallow(<AutoComplete {...props} />);
+  const component = shallow(
+    <AutoComplete
+      clearButton
+      multiple
+      allowNew
+      options={['One', 'Two', 'Three']}
+    />
+  );
 
-  expect(component.render()).toMatchSnapshot();
+  expect(component).toMatchSnapshot();
 });

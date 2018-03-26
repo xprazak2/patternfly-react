@@ -1,8 +1,8 @@
 import React from 'react';
-import {Typeahead} from 'react-bootstrap-typeahead';
+import { Typeahead } from 'react-bootstrap-typeahead';
 import PropTypes from 'prop-types';
 
-const AutoComplete = props => <Typeahead {...props}/>;
+const AutoComplete = props => <Typeahead {...props} />;
 AutoComplete.propTypes = {
   align: PropTypes.string,
   allowNew: PropTypes.bool,
@@ -15,13 +15,13 @@ AutoComplete.propTypes = {
   highlightOnlyResult: PropTypes.bool,
   filterBy: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
   labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  maxHeight: PropTypes.number,
+  maxHeight: PropTypes.string,
   maxResults: PropTypes.number,
   minLength: PropTypes.number,
   multiple: PropTypes.bool,
   options: PropTypes.array.isRequired,
   placeholder: PropTypes.string,
-  selectHintOnEnter: PropTypes.bool,
+  selectHintOnEnter: PropTypes.bool
 };
 
 AutoComplete.defaultProps = {
@@ -36,11 +36,11 @@ AutoComplete.defaultProps = {
   filterBy: [],
   highlightOnlyResult: false,
   labelKey: 'label',
-  maxHeight: 300,
+  maxHeight: '300px',
   maxResults: 100,
   minLength: 0,
   multiple: false,
   placeholder: null,
-  selectHintOnEnter: false,
+  selectHintOnEnter: false
 };
 export default AutoComplete;
