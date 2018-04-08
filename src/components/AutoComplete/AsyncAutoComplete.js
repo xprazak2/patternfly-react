@@ -8,13 +8,15 @@ class AsyncAutoComplete extends React.Component {
     isLoading: this.props.isLoading
   };
 
-  finishCallback = options => this.setState({ options, isLoading: false });
+  onSearchStart = () => this.setState({ isLoading: true });
+
+  onSearchEnd = options => this.setState({ options, isLoading: false });
 
   handleSearch = () => {
-    this.setState({ isLoading: true });
-    // The user must pass the callback to
-    // the 'onSearch' function in order to update the state properly.
-    this.props.onSearch(this.finishCallback);
+    this.onSearchStart();
+    Promise.resolve(this.props.onSearch()).then(options =>
+      this.onSearchEnd(options)
+    );
   };
 
   render = () => (

@@ -1,4 +1,4 @@
-@import '_mixins';
+@import 'mixins';
 
 .rbt {
   outline: none;
@@ -40,7 +40,6 @@
     display: none;
   }
 
-
   &-input {
     @include display-flex();
 
@@ -48,17 +47,6 @@
     overflow: hidden;
     position: relative;
     height: auto;
-
-    &-multi {
-      .rbt-input-wrapper {
-        margin-bottom: -4px;
-        margin-top: -1px;
-      }
-
-      .rbt-input-main {
-        margin: 1px 0 4px;
-      }
-    }
 
     &-wrapper {
       @include flex(1);
@@ -70,6 +58,17 @@
     &-hint {
       // Set input height for cross-browser consistency
       height: 20px;
+    }
+
+    &-multi {
+      .rbt-input-wrapper {
+        margin-bottom: -4px;
+        margin-top: -1px;
+      }
+
+      .rbt-input-main {
+        margin: 1px 0 4px;
+      }
     }
   }
 

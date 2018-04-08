@@ -5,7 +5,9 @@ import AsyncAutoComplete from './AsyncAutoComplete';
 test('AsyncAutoComplete is working !!', () => {
   const optionsArray = ['One', 'Two', 'Three'];
   const timeout = 500;
-  const handleSearch = callback => callback(setTimeout(optionsArray, timeout));
+  const handleSearch = () => {
+    setTimeout(() => optionsArray, timeout);
+  };
   const component = shallow(
     <AsyncAutoComplete
       useCache
