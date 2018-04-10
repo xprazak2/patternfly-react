@@ -92,7 +92,7 @@ AutoCompleteStories.addWithInfo('Highlight Results', () => {
   );
 });
 
-AutoCompleteStories.addWithInfo('Allow New Items', () => {
+AutoCompleteStories.addWithInfo('Allow Adding New Items', () => {
   const allowNew = boolean('Allow Adding New Items', true);
 
   return (
@@ -101,6 +101,12 @@ AutoCompleteStories.addWithInfo('Allow New Items', () => {
       <br />
       <br />
       <h2>Allow Adding New Items</h2>
+      <p>
+        <strong>
+          If a search result doesn&apos;t exist, allow the user to add a custom
+          input.
+        </strong>
+      </p>
       <AutoComplete
         multiple
         allowNew={allowNew}
@@ -112,21 +118,45 @@ AutoCompleteStories.addWithInfo('Allow New Items', () => {
   );
 });
 
-AutoCompleteStories.addWithInfo('Use With Forms', () => {
-  const submitFormOnEnter = boolean('Submit Form On Enter', true);
-  const minLength = number('Min Length to Autocomplete', 0);
+AutoCompleteStories.addWithInfo('Min Chars To AutoComplete', () => {
+  const minLength = number('Set the Minimum Length to Autocomplete', 1);
 
   return (
     <div className="container">
       <br />
       <br />
       <br />
-      <h2>Submit Form On Enter</h2>
-      <Form horizontal onSubmit={e => alert(`Form submitted!`)}>
+      <h2>AutoCompletion will start when there are enough characters.</h2>
+      <AutoComplete
+        minLength={minLength}
+        options={Mocks.countries}
+        labelKey="name"
+        placeholder="Choose a state..."
+      />
+    </div>
+  );
+});
+
+AutoCompleteStories.addWithInfo('Use With Forms', () => {
+  const submitFormOnEnter = boolean('Submit Form On Enter', true);
+  const handleSubmit = e => {
+    alert('Form was submitted successfully !');
+    e.preventDefault();
+  };
+  return (
+    <div className="container">
+      <br />
+      <br />
+      <br />
+      <h2>Submit Form On &quot;Enter&quot;</h2>
+      <p>
+        <strong>Press the &quot;Enter&quot; key</strong>
+      </p>
+      <Form horizontal onSubmit={handleSubmit}>
         <div className="col-sm-10">
           <FormGroup>
             <AutoComplete
-              minLengt={minLength}
+              minLength={1}
               submitFormOnEnter={submitFormOnEnter}
               labelKey="name"
               options={Mocks.countries}
