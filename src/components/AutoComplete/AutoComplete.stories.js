@@ -177,7 +177,8 @@ AutoCompleteStories.addWithInfo('Use With Forms', () => {
 });
 
 AutoCompleteStories.addWithInfo('Using Async Calls', () => {
-  const handleSearch = () =>
+  // query is the text string entered by the user.
+  const handleSearch = query =>
     fetch('https://api.github.com/repos/patternfly/patternfly-react/forks')
       .then(response => response.json())
       .then(forks => forks.map(fork => fork.owner));
