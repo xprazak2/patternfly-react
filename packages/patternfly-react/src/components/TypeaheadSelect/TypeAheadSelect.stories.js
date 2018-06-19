@@ -215,3 +215,23 @@ TypeAheadSelectStories.addWithInfo('Using Async Calls', () => {
     </div>
   );
 });
+
+TypeAheadSelectStories.addWithInfo('Controlled input value', () => (
+  <div className="container">
+    <br />
+    <br />
+    <br />
+    <h2>Controlled input value</h2>
+    <p>
+      <strong>
+        A default value will be shown when the component is rendered.
+      </strong>
+    </p>
+    <TypeAheadSelect
+      defaultInputValue="Denmark"
+      options={Mocks.countries}
+      labelKey="name"
+      placeholder="Choose a state..."
+    />
+  </div>
+));
