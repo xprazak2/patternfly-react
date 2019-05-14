@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { noop } from '../../common/helpers';
 import { Modal } from '../Modal';
 import { Button } from '../Button';
+import { Spinner } from '../Spinner';
 
 const MessageDialog = ({
   show,
@@ -24,47 +25,59 @@ const MessageDialog = ({
   enforceFocus,
   accessibleName,
   accessibleDescription,
+  buttonsDisabled,
+  asyncInProgress,
   ...props
-}) => (
-  <Modal
-    className={classNames('message-dialog-pf', className)}
-    show={show}
-    onHide={onHide}
-    enforceFocus={enforceFocus}
-    aria-modal
-    aria-labelledby={accessibleName}
-    aria-describedby={accessibleDescription}
-    {...props}
-  >
-    <Modal.Header>
-      <Modal.CloseButton onClick={onHide} />
-      <Modal.Title id={accessibleName}>{title}</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      {icon && icon}
-      <div id={accessibleDescription}>
-        {primaryContent && primaryContent}
-        {secondaryContent && secondaryContent}
-      </div>
-    </Modal.Body>
-    <Modal.Footer>
-      {!footer ? (
-        <React.Fragment>
-          {secondaryActionButtonContent && (
-            <Button bsStyle={secondaryActionButtonBsStyle} onClick={secondaryAction}>
-              {secondaryActionButtonContent}
+}) => {
+  const bodyContent = (secondaryContent, asyncInProgress) => {
+    if (asyncInProgress) {
+      return <Spinner size="sm" loading />
+    }
+
+    return secondaryContent && secondaryContent;
+  }
+
+  return (
+    <Modal
+      className={classNames('message-dialog-pf', className)}
+      show={show}
+      onHide={onHide}
+      enforceFocus={enforceFocus}
+      aria-modal
+      aria-labelledby={accessibleName}
+      aria-describedby={accessibleDescription}
+      {...props}
+    >
+      <Modal.Header>
+        <Modal.CloseButton onClick={onHide} />
+        <Modal.Title id={accessibleName}>{title}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {icon && icon}
+        <div id={accessibleDescription}>
+          {primaryContent && primaryContent}
+          {bodyContent(secondaryContent, asyncInProgress)}
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        {!footer ? (
+          <React.Fragment>
+            {secondaryActionButtonContent && (
+              <Button bsStyle={secondaryActionButtonBsStyle} onClick={secondaryAction} disabled={secondaryButtonDisabled}>
+                {secondaryActionButtonContent}
+              </Button>
+            )}
+            <Button autoFocus bsStyle={primaryActionButtonBsStyle} onClick={primaryAction} disabled={primaryButtonDisabled}>
+              {primaryActionButtonContent}
             </Button>
-          )}
-          <Button autoFocus bsStyle={primaryActionButtonBsStyle} onClick={primaryAction}>
-            {primaryActionButtonContent}
-          </Button>
-        </React.Fragment>
-      ) : (
-        footer
-      )}
-    </Modal.Footer>
-  </Modal>
-);
+          </React.Fragment>
+        ) : (
+          footer
+        )}
+      </Modal.Footer>
+    </Modal>
+  )
+};
 
 MessageDialog.propTypes = {
   /** additional class(es) */
@@ -120,7 +133,13 @@ MessageDialog.propTypes = {
   /** Gives the modal an accessible name by referring to the element that provides the dialog title. Must be unique, as this sets an id */
   accessibleName: PropTypes.string,
   /** Gives the modal an accessible description by referring to the modal content that describes the primary message or purpose of the dialog. Not used if there is no static text that describes the modal. Must be unique, as this sets an id */
-  accessibleDescription: PropTypes.string
+  accessibleDescription: PropTypes.string,
+  /** Whether primary button is disabled or not */
+  primaryButtonDisabled: PropTypes.bool,
+  /** Whether secondary button is disabled or not */
+  secondaryButtonDisabled: PropTypes.bool,
+  /** Whether async action is in progress or not */
+  asyncInProgress: PropTypes.bool
 };
 
 MessageDialog.defaultProps = {
@@ -138,7 +157,10 @@ MessageDialog.defaultProps = {
   footer: null,
   enforceFocus: true,
   accessibleName: '',
-  accessibleDescription: ''
+  accessibleDescription: '',
+  primaryButtonDisabled: false,
+  secondaryButtonDisabled: false,
+  asyncInProgress: false
 };
 
 export default MessageDialog;
