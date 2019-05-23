@@ -7,6 +7,8 @@ import { Modal } from '../Modal';
 import { Button } from '../Button';
 import { Spinner } from '../Spinner';
 
+import './MessageDialog.scss';
+
 const MessageDialog = ({
   show,
   onHide,
@@ -25,7 +27,8 @@ const MessageDialog = ({
   enforceFocus,
   accessibleName,
   accessibleDescription,
-  buttonsDisabled,
+  primaryButtonDisabled,
+  secondaryButtonDisabled,
   asyncInProgress,
   ...props
 }) => {
@@ -36,6 +39,8 @@ const MessageDialog = ({
 
     return secondaryContent && secondaryContent;
   }
+
+  const spinner = <Spinner size="sm" loading />
 
   return (
     <Modal
@@ -56,12 +61,13 @@ const MessageDialog = ({
         {icon && icon}
         <div id={accessibleDescription}>
           {primaryContent && primaryContent}
-          {bodyContent(secondaryContent, asyncInProgress)}
+          {secondaryContent && secondaryContent}
         </div>
       </Modal.Body>
       <Modal.Footer>
         {!footer ? (
           <React.Fragment>
+            { asyncInProgress && spinner }
             {secondaryActionButtonContent && (
               <Button bsStyle={secondaryActionButtonBsStyle} onClick={secondaryAction} disabled={secondaryButtonDisabled}>
                 {secondaryActionButtonContent}

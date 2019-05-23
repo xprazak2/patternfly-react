@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info/dist/index';
-import { withKnobs } from '@storybook/addon-knobs';
+import { withKnobs, boolean } from '@storybook/addon-knobs';
 import { defaultTemplate } from 'storybook/decorators/storyTemplates';
 import LinkTo from '@storybook/addon-links/react';
 
@@ -24,6 +24,7 @@ import MessageDialogWarning, { MessageDialogWarningSource } from './Stories/Mess
 import MessageDialogQuestion, { MessageDialogQuestionSource } from './Stories/MessageDialogQuestion';
 import MessageDialogInfo, { MessageDialogInfoSource } from './Stories/MessageDialogInfo';
 import MessageDialogSuccess, { MessageDialogSuccessSource } from './Stories/MessageDialogSuccess';
+import MessageDialogWithAsyncAction, { MessageDialogWithAsyncActionSource } from './Stories/MessageDialogWithAsyncAction';
 
 const modalStoryKind = `${storybookPackageName(name)}/${STORYBOOK_CATEGORY.WIDGETS}/Modal Overlay`;
 
@@ -174,3 +175,23 @@ stories.add(
     )
   })(() => <MessageDialogSuccess />)
 );
+
+stories.add(
+  'Message dialog with async action',
+  withInfo({
+    source: false,
+    propTables: [MessageDialog],
+    propTablesExclude: [MessageDialogWithAsyncAction],
+    text: (
+      <div>
+        <h1>Story Source</h1>
+        <pre>{MessageDialogWithAsyncActionSource}</pre>
+      </div>
+    )
+  })(() => {
+    const buttonsDisabled = boolean('Buttons Disabled', false);
+    const asyncInProgress = boolean('Async action in progress', false);
+
+    return <MessageDialogWithAsyncAction asyncInProgress={asyncInProgress} buttonsDisabled={buttonsDisabled}/>
+  })
+)
